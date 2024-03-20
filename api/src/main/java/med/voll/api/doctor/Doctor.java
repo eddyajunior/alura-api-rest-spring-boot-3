@@ -21,8 +21,8 @@ public class Doctor {
     private String telefone;
     private String document;
 
-    public Doctor(DoctorRecord doctor) {
-        this.name = doctor.email();
+    public Doctor(CreateDoctorRecord doctor) {
+        this.name = doctor.name();
         this.email = doctor.email();
         this.telefone = doctor.telefone();
         this.document = doctor.document();

@@ -9,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("doctor")
 public class DoctorController {
@@ -20,7 +18,7 @@ public class DoctorController {
 
     @PostMapping
     @Transactional
-    public void create(@RequestBody @Valid DoctorRecord doctor)
+    public void create(@RequestBody @Valid CreateDoctorRecord doctor)
     {
         repository.save(new Doctor(doctor));
     }
@@ -36,5 +34,11 @@ public class DoctorController {
     {
         var doctor = repository.getReferenceById(doctorData.id());
         doctor.UpdateData(doctorData);
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void delete(@PathVariable Long id)
+    {
+        repository.deleteById(id);
     }
 }
