@@ -1,45 +1,40 @@
 package med.voll.api.controller;
 
-import med.voll.api.mock.DoctorMock;
-import med.voll.api.mock.DoctorObject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import med.voll.api.doctor.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/doctor")
+@RequestMapping("doctor")
 public class DoctorController {
-    private final DoctorMock mock;
 
-    DoctorController(){
-        this.mock = new DoctorMock();
+    @Autowired
+    private IDoctorRepository repository;
+
+    @PostMapping
+    @Transactional
+    public void create(@RequestBody @Valid DoctorRecord doctor)
+    {
+        repository.save(new Doctor(doctor));
     }
 
     @GetMapping
-    public ArrayList<DoctorObject> listAll()
+    public Page<ListDoctorRecord> list(@PageableDefault(size = 10, sort = { "name" }) Pageable pagination)
     {
-        return mock.listAll();
-    }
-
-    @DeleteMapping
-    public String delete()
-    {
-        return mock.delete();
-    }
-
-    @GetMapping("/{id}")
-    public DoctorObject findOne()
-    {
-        return mock.findOne();
+        return repository.findAll(pagination).map(ListDoctorRecord::new);
     }
     @PutMapping
-    public String update(){
-        return mock.update();
-    }
-
-    @PostMapping
-    public String create()
+    @Transactional
+    public void update(@RequestBody @Valid UpdateDoctorRecord doctorData)
     {
-        return mock.create();
+        var doctor = repository.getReferenceById(doctorData.id());
+        doctor.UpdateData(doctorData);
     }
 }
