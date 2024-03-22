@@ -1,4 +1,4 @@
-package med.voll.api.doctor;
+package med.voll.api.domain.doctor;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,14 +18,16 @@ public class Doctor {
     private Long id;
     private String name;
     private String email;
-    private String telefone;
+    private String phone;
     private String document;
+//    private boolean active;
 
     public Doctor(CreateDoctorRecord doctor) {
         this.name = doctor.name();
         this.email = doctor.email();
-        this.telefone = doctor.telefone();
+        this.phone = doctor.phone();
         this.document = doctor.document();
+//        this.active = true;
     }
 
     public Long getId() {
@@ -51,12 +53,12 @@ public class Doctor {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getTelefone() {
-        return telefone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getDocument() {
@@ -67,6 +69,8 @@ public class Doctor {
         this.document = document;
     }
 
+//    public boolean getActive() { return active; };
+
     public void UpdateData(UpdateDoctorRecord doctorData) {
         if (doctorData.name() != null)
             this.name = doctorData.name();
@@ -74,7 +78,7 @@ public class Doctor {
         if (doctorData.email() != null)
             this.email = doctorData.email();
 
-        if (doctorData.telefone() != null)
-            this.telefone = doctorData.telefone();
+        if (doctorData.phone() != null)
+            this.phone = doctorData.phone();
     }
 }
